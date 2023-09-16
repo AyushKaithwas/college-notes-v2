@@ -1,0 +1,48 @@
+// Define the database provider and connection.
+datasource db {
+  provider = "postgresql" // You can change this depending on your database.
+  url      = env("DATABASE_URL")
+}
+
+// Define how the Prisma Client is generated.
+generator client {
+  provider = "prisma-client-js"
+}
+
+// User database model.
+model User {
+  id                  Int       @id @default(autoincrement())
+  name                String
+  email               String    @unique
+  numberOfNotes       Int       @default(0)
+  dpLink              String?
+  hashedPassword      String
+  accountCreationTime DateTime  @default(now())
+  notes               Note[] // Relation field
+  comments            Comment[] // Relation field
+}
+
+// Notes database model.
+model Note {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("User_id") // Custom column name
+  title     String
+  desc      String?
+  notesLink String
+  subCode   String?
+  hashtags  String? // You may want to handle this differently, e.g., using an array or a separate model.
+  time      DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+  comments  Comment[] // Relation field
+}
+
+// Comments database model.
+model Comment {
+  id      Int      @id @default(autoincrement())
+  postId  Int      @map("Post_id") // Custom column name
+  userId  Int
+  content String   @map("Comment_content") // Custom column name
+  time    DateTime @default(now())
+  user    User     @relation(fields: [userId], references: [id])
+  note    Note     @relation(fields: [postId], references: [id])
+}
