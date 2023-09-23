@@ -6,16 +6,30 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
-    "generate:component": "turbo gen react-component"
+    "generate:component": "turbo gen react-component",
+    "build": "tsup",
+    "dev": "tsup --watch"
   },
   "devDependencies": {
     "@turbo/gen": "^1.10.12",
     "@types/node": "^20.5.2",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.16",
     "eslint-config-custom": "*",
+    "postcss": "^8.4.30",
     "react": "^18.2.0",
+    "tailwind-config": "*",
+    "tailwindcss": "^3.3.3",
     "tsconfig": "*",
+    "tsup": "^7.2.0",
     "typescript": "^4.5.2"
-  }
+  },
+  "exports": {
+    ".": "./dist",
+    "./styles.css": "./dist/index.css"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ]
 }
