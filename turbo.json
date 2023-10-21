@@ -7,12 +7,22 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["BASE_URL"]
+      "env": [
+        "BASE_URL",
+        "NODE_ENV",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET"
+      ]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["BASE_URL"]
+      "env": [
+        "BASE_URL",
+        "NODE_ENV",
+        "GOOGLE_CLIENT_ID",
+        "GOOGLE_CLIENT_SECRET"
+      ]
     },
     "db:generate": {
       "cache": false

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Navbar } from "ui";
 
 export const metadata: Metadata = {
   title: "College Notes - Login",
@@ -10,5 +11,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
-  return <>{children}</>;
+  return (
+    <>
+      <Navbar
+        logoAlt="College notes logo"
+        logoSrc="/logo-small.png"
+        page="login"
+      />
+      {children}
+    </>
+  );
 }
