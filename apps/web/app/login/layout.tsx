@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
 import { Navbar } from "ui";
+import { type NextAuthOptions, getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "College Notes - Login",
   description: "Login page for College Notes",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}): JSX.Element {
+}): Promise<JSX.Element> {
+  const session = await getServerSession(authOptions as NextAuthOptions);
+  if (session) {
+    redirect("/");
+  }
   return (
     <>
       <Navbar
