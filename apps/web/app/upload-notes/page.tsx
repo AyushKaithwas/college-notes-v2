@@ -9,7 +9,7 @@ import {
 } from "@/components/upload-file-dropzone";
 import { Greetings } from "@/lib/greetings";
 import { useEdgeStore } from "@/lib/edgestore";
-import { Button } from "ui";
+import institutionData from "@/public/institution-database.json";
 
 export default function UploadPage(): JSX.Element {
   const { data: session } = useSession();
@@ -19,6 +19,7 @@ export default function UploadPage(): JSX.Element {
   const [time, setTime] = useState("");
   const [salutation, setSalutation] = useState("");
   const [fileStates, setFileStates] = useState<FileState[]>([]);
+  const [selectedInstitution, setSelectedInstitution] = useState("");
   const { edgestore } = useEdgeStore();
 
   function updateFileProgress(key: string, progress: FileState["progress"]) {
@@ -92,16 +93,22 @@ export default function UploadPage(): JSX.Element {
               <h2 className="font-bold text-white">Description</h2>
               <textarea
                 className="bg-transparent border border-secondary rounded-lg p-2 w-full h-[100px] text-white"
-                placeholder="Enter Description"
+                placeholder="Enter description"
               />
             </div>
             <div>
               <h2 className="font-bold text-white">Institution</h2>
-              <input
-                className="bg-transparent border border-secondary rounded-lg p-2 w-full text-white"
-                placeholder="Enter title"
-                type="text"
-              />
+              <select
+                className="w-full text-white bg-[#101010] border border-secondary rounded-lg p-2"
+                value={selectedInstitution}
+                onChange={(e) => setSelectedInstitution(e.target.value)}
+              >
+                {institutionData.map((institution) => (
+                  <option key={institution.id} value={institution.institution}>
+                    {institution.institution}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
@@ -116,15 +123,15 @@ export default function UploadPage(): JSX.Element {
               <h2 className="font-bold text-white">Semester</h2>
               <input
                 className="bg-transparent border border-secondary rounded-lg p-2 w-full text-white"
-                placeholder="Enter title"
-                type="text"
+                placeholder="Enter semester"
+                type="number"
               />
             </div>
             <div>
               <h2 className="font-bold text-white">Subject</h2>
               <input
                 className="bg-transparent border border-secondary rounded-lg p-2 w-full text-white"
-                placeholder="Enter title"
+                placeholder="Enter subject"
                 type="text"
               />
             </div>
