@@ -5,3 +5,4 @@ export { Navbar } from "./components/navbar";
 export { GridWrapper } from "./components/grid-image-wrapper";
 export { Button, buttonVariants } from "./components/primary-button";
 export { SessionProvider } from "./components/SessionProvider";
+export { MultiFileDropzone, type FileState } from "./components/upload-file";

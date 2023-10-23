@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { type NextAuthOptions, getServerSession } from "next-auth";
 import { SessionProvider } from "ui";
 import { authOptions } from "@/lib/auth";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,7 +24,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <SessionProvider session={session}>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <EdgeStoreProvider>{children}</EdgeStoreProvider>
+        </body>
       </SessionProvider>
     </html>
   );
