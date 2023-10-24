@@ -25,12 +25,12 @@ export default function Page(): JSX.Element {
           </p>
           <form className="flex flex-col items-start" action="submit">
             <input
-              className="bg-transparent placeholder-tertiary border border-secondary rounded-md py-3 px-4 w-[350px]"
+              className="bg-transparent placeholder-disabled border border-secondary rounded-md py-3 px-4 w-[350px]"
               placeholder="Email"
               type="text"
             />
             <input
-              className="bg-transparent placeholder-tertiary border border-secondary rounded-md py-3 px-4 mt-4 w-[350px] "
+              className="bg-transparent placeholder-disabled border border-secondary rounded-md py-3 px-4 mt-4 w-[350px] "
               placeholder="Password"
               type="password"
             />
