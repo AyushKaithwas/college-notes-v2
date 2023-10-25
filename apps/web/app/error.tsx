@@ -29,10 +29,10 @@ export default function Error({
           Try again
         </button>
         <Image
-          className="my-5"
-          src={"/college-notes-book.png"}
           alt="Logo"
+          className="my-5"
           height={200}
+          src="/college-notes-book.png"
           width={200}
         />
         <p className="font-semibold text-sm">

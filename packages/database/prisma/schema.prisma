@@ -54,16 +54,19 @@ model User {
 
 // Notes database model.
 model Note {
-  id        Int       @id @default(autoincrement())
-  userId    String    @map("User_id") // Custom column name
-  title     String
-  desc      String?
-  notesLink String
-  subCode   String?
-  hashtags  String? // You may want to handle this differently, e.g., using an array or a separate model.
-  time      DateTime  @default(now())
-  user      User      @relation(fields: [userId], references: [id])
-  comments  Comment[] // Relation field
+  id           Int       @id @default(autoincrement())
+  userId       String    @map("User_id") // Custom column name
+  title        String
+  desc         String?
+  notesLink    String
+  noteSize     Int
+  subject      String
+  institution  String
+  fieldOfStudy String
+  semester     String?
+  time         DateTime  @default(now())
+  user         User      @relation(fields: [userId], references: [id])
+  comments     Comment[] // Relation field
 }
 
 // Comments database model.

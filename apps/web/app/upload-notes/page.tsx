@@ -25,9 +25,12 @@ type FileDetailsType = {
 
 export default function UploadPage(): JSX.Element {
   const { data: session } = useSession();
-  if (!session) {
+  // console.log(session);
+  if (!session?.user?.email) {
+    //assuming that if the user is logged in via any method, their email must be present
     redirect("/login");
   }
+  const userEmail: string = session.user.email;
   const [time, setTime] = useState("");
   const [salutation, setSalutation] = useState("");
   const [fileStates, setFileStates] = useState<FileState[]>([]);
@@ -52,13 +55,19 @@ export default function UploadPage(): JSX.Element {
   const handleUpload = async (
     event: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
+    if (fileStates.length === 0) {
+      event.preventDefault();
+      // Show an error message to the user
+      alert("Please upload at least one file");
+      return;
+    }
     event.preventDefault();
     const formData: FormData = new FormData(event.currentTarget);
     const formValues = {};
-
     for (const [key, value] of formData.entries()) {
       formValues[key] = value;
     }
+    // console.log(formData);
     await Promise.all(
       fileStates.map(async (fileState) => {
         try {
@@ -76,12 +85,16 @@ export default function UploadPage(): JSX.Element {
           fileDetails.current = res;
         } catch (err) {
           updateFileProgress(fileState.key, "ERROR");
+          throw err;
         }
       })
     );
     if (fileDetails.current) {
-      const { size, uploadedAt, url } = fileDetails.current;
-      const postData = { ...formData, size, uploadedAt, url };
+      const { size, url } = fileDetails.current;
+      const postData = { ...formValues, size, url, userEmail };
+      // console.log("Form", formValues);
+      // console.log("Files", fileDetails.current);
+      // console.log("Post Data", postData);
       axios
         .post("/api/upload-note", postData)
         .then((res) => {
@@ -91,8 +104,6 @@ export default function UploadPage(): JSX.Element {
           console.log(err);
         });
     }
-
-    console.log(formValues);
   };
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- Greetings return type is [string, string] so it's safe to destructure
@@ -102,14 +113,14 @@ export default function UploadPage(): JSX.Element {
   }, []);
   return (
     <div className="w-[100vw] flex flex-col items-center">
-      <div className="flex flex-col w-[40vw] min-w-[300px] items-left justify-center py-10 text-secondary ">
+      <div className="flex flex-col w-[70%] min-w-[300px] max-w-[550px] items-left justify-center py-10 text-secondary ">
         <div className="pb-5 pl-3 ">
           <h1 className="font-black text-4xl py-1">{time}</h1>
           <p className=" text-2xl">
-            <strong>{salutation}</strong>, {session.user?.name}
+            <strong>{salutation}</strong>, {session.user.name}
           </p>
         </div>
-        <div className="w-[40vw] min-w-[300px] border border-tertiary rounded-md p-10">
+        <div className="w-full border border-tertiary rounded-md p-10">
           <form className="flex flex-col gap-3" onSubmit={handleUpload}>
             <MultiFileDropzone
               onChange={(files) => {
@@ -123,6 +134,7 @@ export default function UploadPage(): JSX.Element {
             <div>
               <h2 className="font-bold text-white">Title</h2>
               <input
+                required
                 className="bg-transparent border border-secondary rounded-lg p-3 w-full text-white"
                 name="title"
                 placeholder="Enter title"
@@ -140,6 +152,7 @@ export default function UploadPage(): JSX.Element {
             <div>
               <h2 className="font-bold text-white">Institution</h2>
               <select
+                required
                 className="w-full text-white bg-[#101010] border border-secondary rounded-lg p-3"
                 name="institution"
                 onChange={(e) => setSelectedInstitution(e.target.value)}
@@ -157,6 +170,7 @@ export default function UploadPage(): JSX.Element {
                   className="bg-transparent border border-secondary rounded-lg p-3 w-full mt-2 text-white"
                   name="institution"
                   placeholder="Enter other institution"
+                  required
                   type="text"
                 />
               )}
@@ -169,6 +183,7 @@ export default function UploadPage(): JSX.Element {
                 className="w-full text-white bg-[#101010] border border-secondary rounded-lg p-3"
                 id="fieldOfStudy"
                 name="fieldOfStudy"
+                required
                 value={selectedCourse || courseData[0].course}
                 onChange={(e) => setSelectedCourse(e.target.value)}
               >
@@ -186,6 +201,7 @@ export default function UploadPage(): JSX.Element {
                   className="bg-transparent border border-secondary rounded-lg p-3 w-full mt-2 text-white"
                   name="fieldOfStudy"
                   placeholder="Enter other field of study"
+                  required
                   type="text"
                 />
               )}
@@ -205,6 +221,7 @@ export default function UploadPage(): JSX.Element {
                 className="w-full text-white bg-[#101010] border border-secondary rounded-lg p-3"
                 name="subject"
                 onChange={(e) => setSelectedSubject(e.target.value)}
+                required
                 value={selectedSubject || subjectData[0].subject} // Default to id: 1
               >
                 <option value="Other">Other</option>{" "}
@@ -221,6 +238,7 @@ export default function UploadPage(): JSX.Element {
                   className="bg-transparent border border-secondary rounded-lg p-3 w-full mt-2 text-white"
                   name="subject"
                   placeholder="Enter other subject"
+                  required
                   type="text"
                 />
               )}

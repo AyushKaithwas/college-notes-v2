@@ -1,17 +1,34 @@
+const dayNames = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 export const Greetings = (): [string, string] => {
   const date = new Date();
-  const dayNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const dayName = dayNames[date.getDay()];
 
+  const dayName = dayNames[date.getDay()];
   const day = date.getDate();
+
   let suffix = "th";
   if (day === 1 || (day > 20 && day % 10 === 1)) {
     suffix = "st";
@@ -21,20 +38,6 @@ export const Greetings = (): [string, string] => {
     suffix = "rd";
   }
 
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
   const monthName = monthNames[date.getMonth()];
 
   const hours = date.getHours();
@@ -46,6 +49,7 @@ export const Greetings = (): [string, string] => {
   } else {
     timeOfDay = "Good Evening";
   }
+
   const time = `${dayName}, ${monthName} ${day}${suffix}`;
   const salutation = timeOfDay;
 

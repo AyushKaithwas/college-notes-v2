@@ -13,7 +13,7 @@ export async function Navbar({
   page: string;
 }): Promise<JSX.Element> {
   const session = await getServerSession(authOptions);
-  console.log(session);
+  // console.log(session);
   return (
     <div className="flex h-[8vh] justify-between px-10 py-8 items-center border-b-[1px] border-[#363636]">
       <Link href="/">
