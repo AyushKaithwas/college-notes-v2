@@ -1,7 +1,5 @@
-import { PrismaClient } from "database";
 import { type NextRequest, NextResponse } from "next/server";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 // interface Payload {
 //   title: string;
