@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { type EdgeStoreContextValue } from "@edgestore/react/src/contextProvider";
 import {
   MultiFileDropzone,
   type FileState,
@@ -14,7 +13,6 @@ import { useEdgeStore } from "@/lib/edgestore";
 import institutionData from "@/public/combined_institutions_sorted.json";
 import courseData from "@/public/courses.json";
 import subjectData from "@/public/subjects.json";
-import { type EdgeStoreRouter } from "../api/edgestore/[...edgestore]/route";
 
 interface FileDetailsType {
   url: string;
@@ -40,8 +38,7 @@ export default function UploadPage(): JSX.Element {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
   const fileDetails = React.useRef<FileDetailsType | null>(null);
-  const { edgestore } =
-    useEdgeStore() as EdgeStoreContextValue<EdgeStoreRouter>;
+  const { edgestore } = useEdgeStore();
 
   function updateFileProgress(
     key: string,
