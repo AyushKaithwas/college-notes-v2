@@ -7,5 +7,7 @@ module.exports = {
     "@typescript-eslint/no-misused-promises": "off",
     "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     "@typescript-eslint/no-confusing-void-expression": "off",
+    "no-alert": "off",
+    "no-param-reassign": "off",
   },
 };

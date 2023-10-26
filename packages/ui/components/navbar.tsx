@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../apps/web/lib/auth";
+import { useSession } from "next-auth/react";
 import SignOut from "./sign-out-button";
-export async function Navbar({
+export function Navbar({
   logoSrc,
   logoAlt,
   page,
@@ -11,8 +14,8 @@ export async function Navbar({
   logoSrc: string;
   logoAlt: string;
   page: string;
-}): Promise<JSX.Element> {
-  const session = await getServerSession(authOptions);
+}): JSX.Element {
+  const { data: session } = useSession();
   // console.log(session);
   return (
     <div className="flex h-[8vh] justify-between px-10 py-8 items-center border-b-[1px] border-[#363636]">

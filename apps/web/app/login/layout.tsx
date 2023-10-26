@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Navbar } from "ui";
-import { type NextAuthOptions, getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 
@@ -14,7 +14,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }): Promise<JSX.Element> {
-  const session = await getServerSession(authOptions as NextAuthOptions);
+  const session = await getServerSession(authOptions);
   if (session) {
     redirect("/");
   }

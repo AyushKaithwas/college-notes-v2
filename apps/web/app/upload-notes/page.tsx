@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { type EdgeStoreContextValue } from "@edgestore/react/src/contextProvider";
 import {
   MultiFileDropzone,
   type FileState,
@@ -13,15 +14,16 @@ import { useEdgeStore } from "@/lib/edgestore";
 import institutionData from "@/public/combined_institutions_sorted.json";
 import courseData from "@/public/courses.json";
 import subjectData from "@/public/subjects.json";
+import { type EdgeStoreRouter } from "../api/edgestore/[...edgestore]/route";
 
-type FileDetailsType = {
+interface FileDetailsType {
   url: string;
   size: number;
   uploadedAt: Date;
   metadata: Record<string, never>;
   path: Record<string, never>;
   pathOrder: string[];
-};
+}
 
 export default function UploadPage(): JSX.Element {
   const { data: session } = useSession();
@@ -38,16 +40,18 @@ export default function UploadPage(): JSX.Element {
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
   const fileDetails = React.useRef<FileDetailsType | null>(null);
-  const { edgestore } = useEdgeStore();
+  const { edgestore } =
+    useEdgeStore() as EdgeStoreContextValue<EdgeStoreRouter>;
 
-  function updateFileProgress(key: string, progress: FileState["progress"]) {
-    setFileStates((fileStates) => {
-      const newFileStates = structuredClone(fileStates);
-      const fileState = newFileStates.find(
-        (fileState) => fileState.key === key
-      );
-      if (fileState) {
-        fileState.progress = progress;
+  function updateFileProgress(
+    key: string,
+    progress: FileState["progress"]
+  ): void {
+    setFileStates((currentFileStates) => {
+      const newFileStates = structuredClone(currentFileStates);
+      const targetFileState = newFileStates.find((state) => state.key === key);
+      if (targetFileState) {
+        targetFileState.progress = progress;
       }
       return newFileStates;
     });
@@ -76,7 +80,9 @@ export default function UploadPage(): JSX.Element {
             onProgressChange: async (progress) => {
               updateFileProgress(fileState.key, progress);
               if (progress === 100) {
-                await new Promise((resolve) => setTimeout(resolve, 1000));
+                await new Promise((resolve) => {
+                  setTimeout(resolve, 1000);
+                });
                 updateFileProgress(fileState.key, "COMPLETE");
               }
             },
@@ -106,7 +112,6 @@ export default function UploadPage(): JSX.Element {
     }
   };
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- Greetings return type is [string, string] so it's safe to destructure
     const [timeNow, salutationNow]: [string, string] = Greetings();
     setTime(timeNow);
     setSalutation(salutationNow);
@@ -134,10 +139,10 @@ export default function UploadPage(): JSX.Element {
             <div>
               <h2 className="font-bold text-white">Title</h2>
               <input
-                required
                 className="bg-transparent border border-secondary rounded-lg p-3 w-full text-white"
                 name="title"
                 placeholder="Enter title"
+                required
                 type="text"
               />
             </div>
@@ -152,10 +157,10 @@ export default function UploadPage(): JSX.Element {
             <div>
               <h2 className="font-bold text-white">Institution</h2>
               <select
-                required
                 className="w-full text-white bg-[#101010] border border-secondary rounded-lg p-3"
                 name="institution"
                 onChange={(e) => setSelectedInstitution(e.target.value)}
+                required
                 value={selectedInstitution || institutionData[0].institution}
               >
                 <option value="Other">Other</option>
@@ -176,16 +181,16 @@ export default function UploadPage(): JSX.Element {
               )}
             </div>
             <div>
-              <label htmlFor="fieldOfStudy" className="font-bold text-white">
+              <label className="font-bold text-white" htmlFor="fieldOfStudy">
                 Field of Study
               </label>
               <select
                 className="w-full text-white bg-[#101010] border border-secondary rounded-lg p-3"
                 id="fieldOfStudy"
                 name="fieldOfStudy"
+                onChange={(e) => setSelectedCourse(e.target.value)}
                 required
                 value={selectedCourse || courseData[0].course}
-                onChange={(e) => setSelectedCourse(e.target.value)}
               >
                 <option value="Other">Other</option>
                 {courseData.map((course) => {

@@ -1,6 +1,5 @@
-import { GridWrapper } from "ui";
+import { GridWrapper, Button } from "ui";
 import Image from "next/image";
-import { Button } from "ui";
 import LinkedinLogo from "public/oauth-logos/linkedin-logo.svg";
 import GoogleLogo from "public/oauth-logos/google-logo.svg";
 import LoginButton from "./login-button";
@@ -23,7 +22,7 @@ export default function Page(): JSX.Element {
           <p className="text-secondary -mt-1 mb-3">
             We were starting to miss you
           </p>
-          <form className="flex flex-col items-start" action="submit">
+          <form action="submit" className="flex flex-col items-start">
             <input
               className="bg-transparent placeholder-disabled border border-secondary rounded-md py-3 px-4 w-[350px]"
               placeholder="Email"

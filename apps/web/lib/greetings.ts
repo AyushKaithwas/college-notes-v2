@@ -41,7 +41,7 @@ export const Greetings = (): [string, string] => {
   const monthName = monthNames[date.getMonth()];
 
   const hours = date.getHours();
-  let timeOfDay;
+  let timeOfDay: string;
   if (hours < 12) {
     timeOfDay = "Good Morning";
   } else if (hours < 18) {

@@ -1,7 +1,6 @@
 import { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "database";
-import type { PrismaClient } from "database";
 import prisma from "@/lib/prisma";
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
@@ -20,5 +19,5 @@ export const authOptions: NextAuthOptions = {
     verifyRequest: `/login`,
     error: "/login", // Error code passed in query string as ?error=
   },
-  adapter: PrismaAdapter(prisma as PrismaClient),
+  adapter: PrismaAdapter(prisma),
 };

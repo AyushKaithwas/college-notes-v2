@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { type NextAuthOptions, getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { SessionProvider } from "ui";
 import { authOptions } from "@/lib/auth";
 import { EdgeStoreProvider } from "@/lib/edgestore";
@@ -19,7 +19,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }): Promise<JSX.Element> {
-  const session = await getServerSession(authOptions as NextAuthOptions);
+  const session = await getServerSession(authOptions);
 
   return (
     <html lang="en">

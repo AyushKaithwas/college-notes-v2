@@ -15,17 +15,17 @@ export default function LoginButton({
 
   return (
     <button
+      className={`${
+        loading
+          ? "cursor-not-allowed bg-stone-50 dark:bg-stone-800"
+          : "flex justify-center items-center w-12 h-12 p-2 border border-tertiary rounded-lg"
+      }`}
       disabled={loading}
       onClick={() => {
         setLoading(true);
         void signIn("google");
       }}
       type="submit"
-      className={`${
-        loading
-          ? "cursor-not-allowed bg-stone-50 dark:bg-stone-800"
-          : "flex justify-center items-center w-12 h-12 p-2 border border-tertiary rounded-lg"
-      }`}
     >
       {loading ? (
         <p>Loading...</p>

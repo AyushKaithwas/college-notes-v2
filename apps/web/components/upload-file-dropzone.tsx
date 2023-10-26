@@ -9,6 +9,7 @@ import {
 import * as React from "react";
 import { useDropzone, type DropzoneOptions } from "react-dropzone";
 import { twMerge } from "tailwind-merge";
+
 const variants = {
   base: "relative rounded-md p-4 h-[150px] max-w-[calc(100vw-1rem)] flex justify-center items-center flex-col cursor-pointer border border-dashed border-gray-400 dark:border-gray-300 transition-colors duration-200 ease-in-out",
   active: "border-2",
@@ -17,19 +18,20 @@ const variants = {
   accept: "border border-blue-500 bg-blue-500 bg-opacity-10",
   reject: "border border-red-700 bg-red-700 bg-opacity-10",
 };
-export type FileState = {
+export interface FileState {
   file: File;
   key: string; // used to identify the file in the progress callback
   progress: "PENDING" | "COMPLETE" | "ERROR" | number;
-};
-type InputProps = {
+}
+
+interface InputProps {
   className?: string;
   value?: FileState[];
   onChange?: (files: FileState[]) => void | Promise<void>;
   onFilesAdded?: (addedFiles: FileState[]) => void | Promise<void>;
   disabled?: boolean;
   dropzoneOptions?: Omit<DropzoneOptions, "disabled">;
-};
+}
 const ERROR_MESSAGES = {
   fileTooLarge(maxSize: number) {
     return `The file is too large. Max size is ${formatFileSize(maxSize)}.`;
@@ -73,15 +75,13 @@ const MultiFileDropzone = React.forwardRef<HTMLInputElement, InputProps>(
           setCustomError(ERROR_MESSAGES.tooManyFiles(dropzoneOptions.maxFiles));
           return;
         }
-        if (files) {
-          const addedFiles = files.map<FileState>((file) => ({
-            file,
-            key: Math.random().toString(36).slice(2),
-            progress: "PENDING",
-          }));
-          void onFilesAdded?.(addedFiles);
-          void onChange?.([...(value ?? []), ...addedFiles]);
-        }
+        const addedFiles = files.map<FileState>((file) => ({
+          file,
+          key: Math.random().toString(36).slice(2),
+          progress: "PENDING",
+        }));
+        void onFilesAdded?.(addedFiles);
+        void onChange?.([...(value ?? []), ...addedFiles]);
       },
       ...dropzoneOptions,
     });
@@ -92,6 +92,7 @@ const MultiFileDropzone = React.forwardRef<HTMLInputElement, InputProps>(
           variants.base,
           isFocused && variants.active,
           disabled && variants.disabled,
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- false positive
           (isDragReject ?? fileRejections[0]) && variants.reject,
           isDragAccept && variants.accept,
           className
@@ -111,13 +112,14 @@ const MultiFileDropzone = React.forwardRef<HTMLInputElement, InputProps>(
         const { errors } = fileRejections[0];
         if (errors[0]?.code === "file-too-large") {
           return ERROR_MESSAGES.fileTooLarge(dropzoneOptions?.maxSize ?? 0);
-        } else if (errors[0]?.code === "file-invalid-type") {
-          return ERROR_MESSAGES.fileInvalidType();
-        } else if (errors[0]?.code === "too-many-files") {
-          return ERROR_MESSAGES.tooManyFiles(dropzoneOptions?.maxFiles ?? 0);
-        } else {
-          return ERROR_MESSAGES.fileNotSupported();
         }
+        if (errors[0]?.code === "file-invalid-type") {
+          return ERROR_MESSAGES.fileInvalidType();
+        }
+        if (errors[0]?.code === "too-many-files") {
+          return ERROR_MESSAGES.tooManyFiles(dropzoneOptions?.maxFiles ?? 0);
+        }
+        return ERROR_MESSAGES.fileNotSupported();
       }
       return undefined;
     }, [fileRejections, dropzoneOptions]);
@@ -162,24 +164,32 @@ const MultiFileDropzone = React.forwardRef<HTMLInputElement, InputProps>(
                 </div>
                 <div className="grow" />
                 <div className="flex w-12 justify-end text-xs">
-                  {progress === "PENDING" ? (
-                    <button
-                      className="rounded-md p-1 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                      onClick={() => {
-                        void onChange?.(
-                          value.filter((_, index) => index !== i)
-                        );
-                      }}
-                    >
-                      <Trash2Icon className="shrink-0" />
-                    </button>
-                  ) : progress === "ERROR" ? (
-                    <LucideFileWarning className="shrink-0 text-red-600 dark:text-red-400" />
-                  ) : progress !== "COMPLETE" ? (
-                    <div>{Math.round(progress)}%</div>
-                  ) : (
-                    <CheckCircleIcon className="shrink-0 text-green-600 dark:text-gray-400" />
-                  )}
+                  {(() => {
+                    if (progress === "PENDING") {
+                      return (
+                        <button
+                          className="rounded-md p-1 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                          onClick={() => {
+                            void onChange?.(
+                              value.filter((_, index) => index !== i)
+                            );
+                          }}
+                        >
+                          <Trash2Icon className="shrink-0" />
+                        </button>
+                      );
+                    } else if (progress === "ERROR") {
+                      return (
+                        <LucideFileWarning className="shrink-0 text-red-600 dark:text-red-400" />
+                      );
+                    } else if (progress !== "COMPLETE") {
+                      return <div>{Math.round(progress)}%</div>;
+                    } else {
+                      return (
+                        <CheckCircleIcon className="shrink-0 text-green-600 dark:text-gray-400" />
+                      );
+                    }
+                  })()}
                 </div>
               </div>
               {/* Progress Bar */}
