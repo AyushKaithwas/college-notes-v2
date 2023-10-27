@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-redundant-type-constituents -- Official prisma documentation code is throwing eslint error while vercel deployment */
+
 import { PrismaClient } from "database";
 
 const prismaClientSingleton = (): PrismaClient => {
