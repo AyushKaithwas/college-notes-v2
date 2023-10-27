@@ -5,7 +5,7 @@
   "pipeline": {
     "lint": {},
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^db:generate", "^build"],
       "outputs": [".next/**", "!.next/cache/**"],
       "env": [
         "BASE_URL",
@@ -15,6 +15,7 @@
       ]
     },
     "dev": {
+      "dependsOn": ["^db:generate"],
       "cache": false,
       "persistent": true,
       "env": [
