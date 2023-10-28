@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../apps/web/lib/auth";
 import { useSession } from "next-auth/react";
 import SignOut from "./sign-out-button";
+import { Button } from "./primary-button";
 export function Navbar({
   logoSrc,
   logoAlt,
@@ -22,7 +23,9 @@ export function Navbar({
       <Link href="/">
         <div className="flex gap-4 items-center">
           <img alt={logoAlt} src={logoSrc} />
-          <p className="font-black inline-block">COLLEGE NOTES</p>
+          <p className="font-black inline-block hover:scale-110 ease-in-out duration-200">
+            COLLEGE NOTES
+          </p>
         </div>
       </Link>
       <div className="">
@@ -51,11 +54,10 @@ export function Navbar({
             </div>
           </>
         ) : (
-          <Link
-            className="border-[1px] bg-transparent py-2 px-5 rounded-lg"
-            href="/login"
-          >
-            Log In
+          <Link href="/login">
+            <Button className="rounded-lg" variant="outline" size="lg">
+              Log In
+            </Button>
           </Link>
         )}
       </div>

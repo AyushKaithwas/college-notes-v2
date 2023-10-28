@@ -1,6 +1,6 @@
 // import { Card } from "ui";
 import Image from "next/image";
-import { Navbar, GridWrapper } from "ui";
+import { Navbar, GridWrapper, Button } from "ui";
 // import styles from "./page.module.css";
 
 export default function Page(): JSX.Element {
@@ -54,18 +54,12 @@ export default function Page(): JSX.Element {
             some love from your peers
           </p>
           <div className="flex gap-5 my-4">
-            <button
-              className="border-[1px] bg-transparent py-1 px-5 rounded-lg text-sm"
-              type="submit"
-            >
+            <Button className="border-[1px] " type="submit" variant="outline">
               Share Notes
-            </button>
-            <button
-              className="bg-primary py-1 px-5 rounded-lg text-black text-sm"
-              type="submit"
-            >
+            </Button>
+            <Button className="" type="submit" variant="default">
               Search Notes
-            </button>
+            </Button>
           </div>
           <p className="text-secondary underline mt-20 mb-4 ">
             Top Contributors
