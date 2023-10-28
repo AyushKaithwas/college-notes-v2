@@ -39,12 +39,13 @@ export function Navbar({
                     alt="Upload icon"
                     height={20}
                     width={20}
+                    className="hover:scale-125 rounded-md ease-in-out duration-200"
                   />
                 </Link>
               </button>
               <SignOut>
                 <Image
-                  className="rounded-full"
+                  className="hover:scale-125 rounded-full ease-in-out duration-200"
                   src={session?.user?.image || "/user-image-anonymous.svg"}
                   alt="Upload icon"
                   height={25}
