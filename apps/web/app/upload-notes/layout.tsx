@@ -13,11 +13,7 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <>
-      <Navbar
-        logoAlt="College notes logo"
-        logoSrc="/logo-small.png"
-        page="login"
-      />
+      <Navbar logoAlt="College notes logo" logoSrc="/logo-small.png" />
       {children}
     </>
   );
