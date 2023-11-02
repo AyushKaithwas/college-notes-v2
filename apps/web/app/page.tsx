@@ -7,11 +7,7 @@ export default function Page(): JSX.Element {
   return (
     // <main className={styles.main}>
     <>
-      <Navbar
-        logoAlt="College Notes Logo"
-        logoSrc="/logo-small.png"
-        page="homepage"
-      />
+      <Navbar logoAlt="College Notes Logo" logoSrc="/logo-small.png" />
       <GridWrapper>
         <main className="flex flex-wrap flex-col p-24 justify-center items-center min-h-[90vh]">
           <div className="group">
