@@ -37,7 +37,8 @@ export default function Error({
           width={200}
         />
         <p className="font-semibold text-sm">
-          "Anyone who has never made a mistake has never tried anything new"
+          &quot;Anyone who has never made a mistake has never tried anything
+          new&quot;
         </p>
         <div className="border border-disabled rounded-full px-2 py-1 m-4">
           <div className="flex border border-disabled rounded-full px-3 justify-center items-center">
