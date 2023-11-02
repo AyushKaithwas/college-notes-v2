@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --foreground-hex: #ffffff;
-  --background-hex: #101010;
+  --foreground-hex: 0 0% 100%;
+  --background-hex: 0 0% 6%;
 
-  --primary-hex: #d77e42;
-  --secondary-hex: #b5b5b5;
-  --tertiary-hex: #262626;
+  --primary-hex: 24 65% 55%;
+  --secondary-hex: 0 0% 71%;
+  --tertiary-hex: 0 0% 15%;
 
-  --secondary-hex: #d0d0d0;
-  --disabled-hex: #696969;
+  --secondary-hex: 0 0% 82%;
+  --disabled-hex: 0 0% 41%;
 }
 
 * {
@@ -27,8 +27,8 @@ body {
 }
 
 body {
-  color: var(--foreground-hex);
-  background: var(--background-hex);
+  color: hsl(var(--foreground-hex));
+  background: hsl(var(--background-hex));
 }
 
 a {

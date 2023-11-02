@@ -19,7 +19,7 @@ export default function LoginButton({
       className={`hover:bg-tertiary ease-in-out duration-200 ${
         loading
           ? "cursor-not-allowed bg-transparent "
-          : "flex justify-center items-center w-12 h-12 p-2 border border-tertiary rounded-lg"
+          : "flex justify-center items-center w-12 h-12 p-2 border border-tertiary rounded-[0.5rem]"
       }`}
       disabled={loading}
       onClick={() => {

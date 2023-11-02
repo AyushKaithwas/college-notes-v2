@@ -50,10 +50,18 @@ export default function Page(): JSX.Element {
             some love from your peers
           </p>
           <div className="flex gap-5 my-4">
-            <Button className="border-[1px] " type="submit" variant="outline">
+            <Button
+              className="border-[1px] rounded-[0.5rem]"
+              type="submit"
+              variant="outline"
+            >
               Share Notes
             </Button>
-            <Button className="" type="submit" variant="default">
+            <Button
+              className="rounded-[0.5rem]"
+              type="submit"
+              variant="default"
+            >
               Search Notes
             </Button>
           </div>

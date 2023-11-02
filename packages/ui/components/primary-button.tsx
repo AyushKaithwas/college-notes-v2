@@ -3,12 +3,11 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "ui/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center text-black text-sm py-1 px-5 rounded-lg ease-in-out duration-200",
+  "inline-flex items-center justify-center text-black text-sm py-1 px-5 ease-in-out duration-200",
   {
     variants: {
       variant: {
-        default:
-          "bg-primary rounded-lg border border-primary hover:bg-[#FFE072] ",
+        default: "bg-primary border border-primary hover:bg-[#FFE072] ",
         outline: "border-[1px] bg-transparent text-white hover:bg-tertiary",
         hover: "border-[1px] hover:bg-hover hover:text-white",
       },

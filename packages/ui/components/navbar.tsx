@@ -7,14 +7,13 @@ import { authOptions } from "../../../apps/web/lib/auth";
 import { useSession } from "next-auth/react";
 import SignOut from "./sign-out-button";
 import { Button } from "./primary-button";
+import { ProfileButton } from "./profile-button";
 export function Navbar({
   logoSrc,
   logoAlt,
-  page,
 }: {
   logoSrc: string;
   logoAlt: string;
-  page: string;
 }): JSX.Element {
   const { data: session } = useSession();
   // console.log(session);
@@ -43,20 +42,12 @@ export function Navbar({
                   />
                 </Link>
               </button>
-              <SignOut>
-                <Image
-                  className="hover:scale-125 rounded-full ease-in-out duration-200"
-                  src={session?.user?.image || "/user-image-anonymous.svg"}
-                  alt="Upload icon"
-                  height={25}
-                  width={25}
-                />
-              </SignOut>
+              <ProfileButton />
             </div>
           </>
         ) : (
           <Link href="/login">
-            <Button className="rounded-lg" variant="outline" size="lg">
+            <Button className="rounded-[0.75rem]" variant="outline">
               Log In
             </Button>
           </Link>
