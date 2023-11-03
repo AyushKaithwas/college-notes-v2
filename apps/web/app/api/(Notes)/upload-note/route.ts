@@ -78,6 +78,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       console.log("note", note);
       console.log(process.env.PDF_TO_IMG_URL);
       if (process.env.PDF_TO_IMG_URL) {
+        console.log("Entered if block");
         // Use the function:
         makeRequest<ApiResponse>(
           process.env.PDF_TO_IMG_URL,
@@ -85,6 +86,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           1
         )
           .then((res3) => {
+            console.log("entered ");
+            console.log("res3", res3);
             if (res3?.data.url) {
               const thumbnail = res3.data.url;
               console.log("thumbnail", thumbnail);
@@ -128,6 +131,7 @@ const makeRequest = async <T>(
   attempt = 1
 ): Promise<AxiosResponse<T> | undefined> => {
   try {
+    console.log("Entered makeRequest");
     return axios.post<T>(url, { pdfUrl });
   } catch (err) {
     if (attempt < MAX_RETRIES) {
