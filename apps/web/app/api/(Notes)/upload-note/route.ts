@@ -40,6 +40,10 @@ interface Payload {
   userEmail: string;
 }
 
+interface ApiResponse {
+  url: string;
+}
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const res = (await req.json()) as Payload;
   const user = await prisma.user.findUnique({
@@ -75,9 +79,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
       if (process.env.PDF_TO_IMG_URL) {
         // Use the function:
-        makeRequest(process.env.PDF_TO_IMG_URL, noteDataDb.notesLink, 1)
+        makeRequest<ApiResponse>(
+          process.env.PDF_TO_IMG_URL,
+          noteDataDb.notesLink,
+          1
+        )
           .then((res3) => {
-            if (res3?.data?.url) {
+            if (res3?.data.url) {
               const thumbnail = res3.data.url;
               console.log("thumbnail", thumbnail);
               prisma.note
