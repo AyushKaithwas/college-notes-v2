@@ -57,6 +57,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           noteDataDb.notesLink
         )
           .then((res3) => {
+            if (!res3) console.log("Error uploading thumbnail");
+            console.log(res3?.data.url);
             prisma.note
               .update({
                 where: {
