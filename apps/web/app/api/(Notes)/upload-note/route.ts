@@ -74,18 +74,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .create({
       data: noteDataDb,
     })
-    .then((note) => {
+    .then(async (note) => {
       console.log("note", note);
       console.log(process.env.PDF_TO_IMG_URL);
       if (process.env.PDF_TO_IMG_URL) {
         console.log("Entered if block");
         // Use the function:
-        const res3 = makeRequest<ApiResponse>(
+        await makeRequest<ApiResponse>(
           process.env.PDF_TO_IMG_URL,
           noteDataDb.notesLink,
           1
-        );
-        console.log("res3", res3);
+        )
+          .then((res3) => {
+            console.log(res3);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         // // .then((res3) => {
         // //   console.log("entered ");
         // //   console.log("res3", res3);
