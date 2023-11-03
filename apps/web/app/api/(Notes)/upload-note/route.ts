@@ -80,36 +80,37 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       if (process.env.PDF_TO_IMG_URL) {
         console.log("Entered if block");
         // Use the function:
-        makeRequest<ApiResponse>(
+        const res3 = makeRequest<ApiResponse>(
           process.env.PDF_TO_IMG_URL,
           noteDataDb.notesLink,
           1
-        )
-          .then((res3) => {
-            console.log("entered ");
-            console.log("res3", res3);
-            if (res3?.data.url) {
-              const thumbnail = res3.data.url;
-              console.log("thumbnail", thumbnail);
-              prisma.note
-                .update({
-                  where: {
-                    id: note.id,
-                  },
-                  data: {
-                    thumbnail,
-                  },
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            }
-            console.log("Success");
-          })
-          .catch((err) => {
-            console.log(err);
-            console.log("Reached max retries. Giving up.");
-          });
+        );
+        console.log("res3", res3);
+        // // .then((res3) => {
+        // //   console.log("entered ");
+        // //   console.log("res3", res3);
+        // //   if (res3?.data.url) {
+        // //     const thumbnail = res3.data.url;
+        // //     console.log("thumbnail", thumbnail);
+        // //     prisma.note
+        // //       .update({
+        // //         where: {
+        // //           id: note.id,
+        // //         },
+        // //         data: {
+        // //           thumbnail,
+        // //         },
+        // //       })
+        // //       .catch((err) => {
+        // //         console.log(err);
+        // //       });
+        // //   }
+        // //   console.log("Success");
+        // // })
+        // .catch((err) => {
+        //   console.log(err);
+        //   console.log("Reached max retries. Giving up.");
+        // });
       }
       return NextResponse.json(note.id, { status: 200 });
     })
@@ -132,7 +133,7 @@ const makeRequest = async <T>(
 ): Promise<AxiosResponse<T> | undefined> => {
   try {
     console.log("Entered makeRequest");
-    return axios.post<T>(url, { pdfUrl });
+    return await axios.post<T>(url, { pdfUrl });
   } catch (err) {
     if (attempt < MAX_RETRIES) {
       console.log(`Attempt ${attempt} failed. Retrying...`);
