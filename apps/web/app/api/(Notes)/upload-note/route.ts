@@ -86,7 +86,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           1
         )
           .then((res3) => {
-            console.log(res3);
+            console.log(res3?.data.url);
           })
           .catch((err) => {
             console.log(err);
