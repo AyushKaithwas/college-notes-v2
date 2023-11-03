@@ -56,10 +56,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           process.env.PDF_TO_IMG_URL,
           noteDataDb.notesLink
         )
-          .then((res3) => {
+          .then(async (res3) => {
             if (!res3) console.log("Error uploading thumbnail");
             console.log(res3?.data.url);
-            prisma.note
+            await prisma.note
               .update({
                 where: {
                   id: note.id,
