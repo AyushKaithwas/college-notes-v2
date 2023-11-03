@@ -11,7 +11,8 @@
         "BASE_URL",
         "NODE_ENV",
         "GOOGLE_CLIENT_ID",
-        "GOOGLE_CLIENT_SECRET"
+        "GOOGLE_CLIENT_SECRET",
+        "PDF_TO_IMG_URL"
       ]
     },
     "dev": {
@@ -22,7 +23,8 @@
         "BASE_URL",
         "NODE_ENV",
         "GOOGLE_CLIENT_ID",
-        "GOOGLE_CLIENT_SECRET"
+        "GOOGLE_CLIENT_SECRET",
+        "PDF_TO_IMG_URL"
       ]
     },
     "db:generate": {

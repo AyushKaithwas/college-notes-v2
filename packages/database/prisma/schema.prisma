@@ -59,6 +59,7 @@ model Note {
   title        String
   desc         String?
   notesLink    String
+  thumbnail    String?
   noteSize     Int
   subject      String
   institution  String

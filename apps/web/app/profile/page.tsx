@@ -25,14 +25,7 @@ export default async function Page(): Promise<JSX.Element> {
             <h1 className="text-secondary text-sm">Rank</h1>
           </div> */}
         </div>
-        <div className="w-full border border-tertiary rounded-md p-10">
-          <h1>ejl</h1>
-          <h1>ejl</h1>
-          <h1>ejl</h1>
-          <h1>ejl</h1>
-          <h1>ejl</h1>
-          <h1>ejl</h1>
-        </div>
+        <div className="w-full border border-tertiary rounded-md p-10"></div>
       </div>
     </div>
   );

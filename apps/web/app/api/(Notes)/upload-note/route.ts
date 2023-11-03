@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- Official prisma documentation code is throwing eslint error while vercel deployment */
 
 import { type NextRequest, NextResponse } from "next/server";
+import axios, { type AxiosResponse } from "axios";
 import prisma from "@/lib/prisma";
 
 // interface Payload {
@@ -62,6 +63,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     subject: res.subject,
     noteSize: res.size,
     notesLink: res.url,
+    thumbnail: "",
   };
 
   await prisma.note
@@ -69,8 +71,36 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       data: noteDataDb,
     })
     .then((note) => {
+      console.log("note", note);
+
+      if (process.env.PDF_TO_IMG_URL) {
+        // Use the function:
+        makeRequest(process.env.PDF_TO_IMG_URL, noteDataDb.notesLink, 1)
+          .then((res3) => {
+            if (res3?.data?.url) {
+              const thumbnail = res3.data.url;
+              console.log("thumbnail", thumbnail);
+              prisma.note
+                .update({
+                  where: {
+                    id: note.id,
+                  },
+                  data: {
+                    thumbnail,
+                  },
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+            console.log("Success");
+          })
+          .catch((err) => {
+            console.log(err);
+            console.log("Reached max retries. Giving up.");
+          });
+      }
       return NextResponse.json(note.id, { status: 200 });
-      // return res.status(201).send(document[0].id);
     })
     .catch((err) => {
       console.log(err);
@@ -81,3 +111,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   return NextResponse.json({ Response: "Recieved" }, { status: 200 });
 }
+
+const MAX_RETRIES = 5;
+
+const makeRequest = async <T>(
+  url: string,
+  pdfUrl: string,
+  attempt = 1
+): Promise<AxiosResponse<T> | undefined> => {
+  try {
+    return axios.post<T>(url, { pdfUrl });
+  } catch (err) {
+    if (attempt < MAX_RETRIES) {
+      console.log(`Attempt ${attempt} failed. Retrying...`);
+      return makeRequest(url, pdfUrl, attempt + 1);
+    }
+    console.log(err);
+    return undefined;
+  }
+};
