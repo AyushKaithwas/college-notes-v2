@@ -76,7 +76,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     })
     .then((note) => {
       console.log("note", note);
-
+      console.log(process.env.PDF_TO_IMG_URL);
       if (process.env.PDF_TO_IMG_URL) {
         // Use the function:
         makeRequest<ApiResponse>(
