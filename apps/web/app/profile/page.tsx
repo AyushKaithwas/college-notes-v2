@@ -1,10 +1,65 @@
 import Image from "next/image";
 import { getServerSession } from "next-auth";
-import { MessageSquare, ArrowDownToLine, ArrowBigUp } from "lucide-react";
+import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
+import { NoteCard } from "@/components/note-card";
+import prisma from "@/lib/prisma";
+
+interface Note {
+  id: number;
+  userId: string; // this is mapped to "User_id" in your Prisma schema, but in TypeScript, we use the field name as it appears in the Prisma client API
+  title: string;
+  desc: string | null;
+  notesUpvotes: number;
+  notesLink: string;
+  downloads: number;
+  thumbnail: string | null;
+  noteSize: number;
+  subject: string;
+  institution: string;
+  fieldOfStudy: string;
+  semester: string | null;
+  time: Date;
+}
+
+// This should match the `User` model in your Prisma schema,
+// including the possibility of `null` for `image` and `hashedPassword`.
+interface UserWithNotes {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: Date | null;
+  numberOfNotes: number;
+  image: string | null;
+  hashedPassword: string | null;
+  accountCreationTime: Date;
+  notes: Note[];
+}
 
 export default async function Page(): Promise<JSX.Element> {
   const session = await getServerSession(authOptions);
+
+  if (session?.user?.email === null) {
+    redirect("/login");
+  }
+
+  const userWithNotes: UserWithNotes | null = await prisma.user.findUnique({
+    where: { email: session?.user?.email },
+    include: {
+      notes: true, // This will include the notes for the user
+    },
+  });
+
+  if (userWithNotes) {
+    console.log(userWithNotes);
+  } else {
+    // Handle the case where no user is found
+    console.log("No user found with that email");
+  }
+  const notesData = userWithNotes?.notes;
+  const notes = notesData?.map((noteData) => (
+    <NoteCard key={noteData.id} note={noteData} />
+  ));
 
   return (
     <div className="w-[100vw] flex flex-col items-center">
@@ -26,40 +81,7 @@ export default async function Page(): Promise<JSX.Element> {
             <h1 className="text-secondary text-sm">Rank</h1>
           </div> */}
         </div>
-        <div className="w-full border border-tertiary rounded-md p-10 flex flex-row gap-5">
-          <Image
-            alt="thumbnail"
-            className="rounded-[0.5rem]"
-            height={100}
-            src="https://storage.googleapis.com/college-user-resources/e8ee8f90-fec6-4cc1-8b49-fb8a2fc8b82f.png"
-            width={100}
-          />
-          <div className="flex flex-col flex-grow justify-between w-full ">
-            <div className="flex flex-row items-center justify-between">
-              <h1 className="font-bold">Engineering Mathematics</h1>
-              <div className="flex flex-row gap-3 items-center">
-                <button>
-                  <MessageSquare size={20} />
-                </button>
-                <button>
-                  <ArrowDownToLine size={20} />
-                </button>
-                <button>
-                  <ArrowBigUp className="-ml-1" size={25} />
-                </button>
-              </div>
-            </div>
-            <p className=" text-xs">
-              <strong>Description:</strong> This is my midsem notes by Pradeep
-              sir. Very awesome writing and clean images.Please upvote. very
-              very needed. Money. send UPI for full version. Telegram me :-
-              http://tel.me/?username=tanish
-            </p>
-            <p className=" text-xs">
-              <strong>Date:</strong> 10th June. 2023
-            </p>
-          </div>
-        </div>
+        {notes}
       </div>
     </div>
   );
