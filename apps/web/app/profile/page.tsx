@@ -4,7 +4,6 @@ import { authOptions } from "@/lib/auth";
 import { ProfileNotes } from "@/components/profile-notes";
 import { getUsersNotes } from "@/actions/get-user-and-notes";
 
-const page = 1;
 const pageSize = 12;
 
 export default async function Page(): Promise<JSX.Element> {
