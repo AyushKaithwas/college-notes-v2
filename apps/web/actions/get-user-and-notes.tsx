@@ -10,7 +10,7 @@ export async function getUsersNotes(
   page: number
 ): Promise<Note[] | null> {
   const session = await getServerSession(authOptions);
-  if (!session.user.email) {
+  if (!session?.user?.email) {
     return null;
   }
   const userWithNotes: UserWithNotes | null = await prisma.user.findUnique({
