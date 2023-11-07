@@ -17,10 +17,10 @@ export function ProfileNotes({ notes }: { notes: Note[] }): JSX.Element {
 
   async function loadMoreNotes() {
     const nextPage = page + 1;
-    const notes = await getUsersNotes(12, nextPage);
-    if (notes !== null && notes.length) {
+    const userNotes = await getUsersNotes(12, nextPage);
+    if (userNotes?.length) {
       setPage(nextPage);
-      setNotesData([...notesData, ...notes]);
+      setNotesData([...notesData, ...userNotes]);
     } else {
       setAllNotesLoaded(true);
     }
