@@ -33,6 +33,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { status: 400 }
     );
   }
+
   const noteDataDb = {
     userId: user.id,
     title: res.title,

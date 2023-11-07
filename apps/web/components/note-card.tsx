@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowBigUp, ArrowDownToLine, MessageSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,6 +24,9 @@ interface Note {
 export function NoteCard({ note }: { note: Note }): JSX.Element {
   const { title, desc, notesUpvotes, notesLink, thumbnail, time, downloads } =
     note;
+  const date = time.getDate() < 10 ? `0${time.getDate()}` : time.getDate();
+  const month = time.getMonth() < 10 ? `0${time.getMonth()}` : time.getMonth();
+  const fullDate = `${date}/${month}/${time.getFullYear()}`;
   return (
     <div className="w-full border border-tertiary rounded-md p-10 flex flex-row gap-5">
       <Image
@@ -39,7 +44,7 @@ export function NoteCard({ note }: { note: Note }): JSX.Element {
           <strong>Description:</strong> {desc}
         </p>
         <p className=" text-xs">
-          <strong>Date:</strong> {time.toLocaleDateString()}
+          <strong>Date:</strong> {fullDate}
         </p>
         <div className="flex flex-row gap-3 items-center">
           <button className="flex flex-row items-center gap-1">
