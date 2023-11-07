@@ -8,7 +8,7 @@ import { NoteCard } from "./note-card";
 import { type Note } from "@/types";
 import { getUsersNotes } from "@/actions/get-user-and-notes";
 
-export function ProfileNotes({ notes }: { notes: Note[] | null }): JSX.Element {
+export function ProfileNotes({ notes }: { notes: Note[] }): JSX.Element {
   const { data: session } = useSession();
   const [notesData, setNotesData] = useState<Note[]>(notes);
   const [allNotesLoaded, setAllNotesLoaded] = useState<boolean>(false);

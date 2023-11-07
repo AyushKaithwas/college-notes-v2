@@ -21,7 +21,11 @@ export default async function Page(): Promise<JSX.Element> {
 
   return (
     <div className="w-[100vw] flex flex-col items-center">
-      <ProfileNotes notes={initialNotes} />
+      {initialNotes ? (
+        <ProfileNotes notes={initialNotes} />
+      ) : (
+        <div>No Notes Uploaded</div>
+      )}
     </div>
   );
 }
