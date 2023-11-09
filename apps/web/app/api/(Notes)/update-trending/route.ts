@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(): Promise<NextResponse> {
-  let errorMessage = "";
+  let errorMessageNotesWithMostUpvotes = "";
   const currentDate = new Date();
   const sevenDaysAgo = new Date(currentDate.setDate(currentDate.getDate() - 7));
   const notesWithMostUpvotes = await prisma.note
@@ -37,10 +37,10 @@ export async function GET(): Promise<NextResponse> {
     })
     .catch((err) => {
       console.log(err);
-      errorMessage = err;
+      errorMessageNotesWithMostUpvotes = err;
     });
 
-  if (errorMessage) {
+  if (errorMessageNotesWithMostUpvotes) {
     return NextResponse.json(
       { Error: "Unable to filter trending notes" },
       { status: 400 }
@@ -53,6 +53,7 @@ export async function GET(): Promise<NextResponse> {
       ...rest,
     })
   );
+  let errorWhileUpdatingTrendingNotes = "";
 
   const result = await prisma.trendingNote
     .createMany({
@@ -60,14 +61,16 @@ export async function GET(): Promise<NextResponse> {
     })
     .catch((err) => {
       console.log(err);
-      return NextResponse.json(
-        { Error: "Unable to update Trending Notes table" },
-        { status: 400 }
-      );
+      errorWhileUpdatingTrendingNotes = err;
     });
 
   // console.log(result);
-
+  if (errorWhileUpdatingTrendingNotes) {
+    return NextResponse.json(
+      { Error: "Unable to update Trending Notes table" },
+      { status: 400 }
+    );
+  }
   return NextResponse.json(
     { Success: "Trending Notes table updated successfully" },
     { status: 200 }
