@@ -2,7 +2,7 @@
 
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
-import { type Note, type UserWithNotes } from "@/types";
+import { type Note, type User } from "@/types";
 import { authOptions } from "@/lib/auth";
 
 export async function getUsersNotes(
@@ -13,7 +13,7 @@ export async function getUsersNotes(
   if (!session?.user?.email) {
     return null;
   }
-  const userWithNotes: UserWithNotes | null = await prisma.user.findUnique({
+  const userWithNotes: User | null = await prisma.user.findUnique({
     where: { email: session?.user?.email },
     include: {
       notes: {

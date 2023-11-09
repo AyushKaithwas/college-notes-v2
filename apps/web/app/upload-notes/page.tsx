@@ -2,26 +2,18 @@
 import * as React from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import {
   MultiFileDropzone,
   type FileState,
 } from "@/components/upload-file-dropzone";
-import { Greetings } from "@/lib/greetings";
 import { useEdgeStore } from "@/lib/edgestore";
 import institutionData from "@/public/combined_institutions_sorted.json";
 import courseData from "@/public/courses.json";
 import subjectData from "@/public/subjects.json";
-
-interface FileDetailsType {
-  url: string;
-  size: number;
-  uploadedAt: Date;
-  metadata: Record<string, never>;
-  path: Record<string, never>;
-  pathOrder: string[];
-}
+import { type FileDetailsType } from "@/types";
+import { Salutation } from "@/components/time-salutation";
 
 export default function UploadPage(): JSX.Element {
   const { data: session } = useSession();
@@ -31,8 +23,6 @@ export default function UploadPage(): JSX.Element {
     redirect("/login");
   }
   const userEmail: string = session.user.email;
-  const [time, setTime] = useState("");
-  const [salutation, setSalutation] = useState("");
   const [fileStates, setFileStates] = useState<FileState[]>([]);
   const [selectedInstitution, setSelectedInstitution] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("");
@@ -108,20 +98,10 @@ export default function UploadPage(): JSX.Element {
         });
     }
   };
-  useEffect(() => {
-    const [timeNow, salutationNow]: [string, string] = Greetings();
-    setTime(timeNow);
-    setSalutation(salutationNow);
-  }, []);
   return (
     <div className="w-[100vw] flex flex-col items-center">
       <div className="flex flex-col w-[70%] min-w-[300px] max-w-[550px] items-left justify-center py-10 text-secondary ">
-        <div className="pb-5 pl-3 ">
-          <h1 className="font-black text-4xl py-1">{time}</h1>
-          <p className=" text-2xl">
-            <strong>{salutation}</strong>, {session.user.name}
-          </p>
-        </div>
+        <Salutation />
         <div className="w-full border border-tertiary rounded-md p-10">
           <form className="flex flex-col gap-3" onSubmit={handleUpload}>
             <MultiFileDropzone

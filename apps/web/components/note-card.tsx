@@ -3,27 +3,12 @@
 import { ArrowBigUp, ArrowDownToLine, MessageSquare } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-interface Note {
-  id: number;
-  userId: string;
-  title: string;
-  desc: string | null;
-  notesUpvotes: number;
-  notesLink: string;
-  downloads: number;
-  thumbnail: string | null;
-  noteSize: number;
-  subject: string;
-  institution: string;
-  fieldOfStudy: string;
-  semester: string | null;
-  time: Date;
-}
+import { type Note } from "@/types";
 
 export function NoteCard({ note }: { note: Note }): JSX.Element {
-  const { title, desc, notesUpvotes, notesLink, thumbnail, time, downloads } =
+  const { title, desc, noOfUpvotes, notesLink, thumbnail, time, downloads } =
     note;
+  console.log(note);
   const date = time.getDate() < 10 ? `0${time.getDate()}` : time.getDate();
   const month = time.getMonth() < 10 ? `0${time.getMonth()}` : time.getMonth();
   const fullDate = `${date}/${month}/${time.getFullYear()}`;
@@ -40,9 +25,11 @@ export function NoteCard({ note }: { note: Note }): JSX.Element {
         <div className="flex flex-row items-center justify-between">
           <h1 className="font-bold text-lg">{title}</h1>
         </div>
-        <p className=" text-xs">
-          <strong>Description:</strong> {desc}
-        </p>
+        {desc !== "" ? (
+          <p className=" text-xs">
+            <strong>Description:</strong> {desc}
+          </p>
+        ) : null}
         <p className=" text-xs">
           <strong>Date:</strong> {fullDate}
         </p>
@@ -63,7 +50,7 @@ export function NoteCard({ note }: { note: Note }): JSX.Element {
           </button>
           <button className="flex flex-row items-center gap-1">
             <ArrowBigUp className="-ml-1" size={25} />
-            <p className=" text-xs">{notesUpvotes}</p>
+            <p className=" text-xs">{noOfUpvotes}</p>
           </button>
         </div>
       </div>

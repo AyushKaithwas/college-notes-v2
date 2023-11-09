@@ -8,17 +8,27 @@ import { NoteCard } from "./note-card";
 import { Salutation } from "./time-salutation";
 import { type Note } from "@/types";
 import { getUsersNotes } from "@/actions/get-user-and-notes";
+import { getTrendingNotes, getRecentNotes } from "@/actions/get-all-notes";
 
-export function ProfileNotes({ notes }: { notes: Note[] }): JSX.Element {
-  const { data: session } = useSession();
-  const [notesData, setNotesData] = useState<Note[]>(notes);
+export function AllNotes({ notes }: { notes: Note[] | null }): JSX.Element {
+  //   const { data: session } = useSession();
+  const [notesData, setNotesData] = useState<Note[] | null>(notes);
+  const [recentNotesData, setRecentNotesData] = useState<Note[] | null>(null);
   const [allNotesLoaded, setAllNotesLoaded] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [ref, inView] = useInView();
+  const [isTrendingSelected, setIsTrendingSelected] = useState<boolean>(true);
+
+  async function loadInitialRecentNotes(): Promise<void> {
+    const userNotes = await getRecentNotes(12, 1);
+    if (userNotes?.length) {
+      setRecentNotesData(userNotes);
+    }
+  }
 
   async function loadMoreNotes(): Promise<void> {
     const nextPage = page + 1;
-    const userNotes = await getUsersNotes(12, nextPage);
+    const userNotes = await getTrendingNotes(12, nextPage);
     if (userNotes?.length) {
       setPage(nextPage);
       setNotesData([...notesData, ...userNotes]);
@@ -26,7 +36,16 @@ export function ProfileNotes({ notes }: { notes: Note[] }): JSX.Element {
       setAllNotesLoaded(true);
     }
   }
-
+  async function loadMoreRecentNotes(): Promise<void> {
+    const nextPage = page + 1;
+    const userNotes = await getTrendingNotes(12, nextPage);
+    if (userNotes?.length) {
+      setPage(nextPage);
+      setNotesData([...notesData, ...userNotes]);
+    } else {
+      setAllNotesLoaded(true);
+    }
+  }
   useEffect(() => {
     void (async () => {
       if (inView) {
@@ -39,26 +58,59 @@ export function ProfileNotes({ notes }: { notes: Note[] }): JSX.Element {
     <div className="w-[100vw] flex flex-col items-center">
       <div className="flex flex-col w-[70%] min-w-[300px] max-w-[550px] items-left justify-center py-10 text-secondary ">
         <Salutation />
-        <div className="w-full flex flex-row  justify-between ems-center gap-5 border border-tertiary rounded-md p-10">
+        <div className="w-full flex flex-row  justify-between ems-center gap-5 border border-tertiary rounded-md px-6 py-3">
           <div className="flex flex-row gap-5 items-center" ref={ref}>
-            <Image
-              alt="Upload icon"
-              className="hover:scale-110 rounded-full ease-in-out duration-200"
-              height={50}
-              src={session?.user?.image || "/user-image-anonymous.svg"}
-              width={50}
-            />
-            <h1 className="font-bold text-lg">{session?.user?.name}</h1>
+            <button
+              className={`${
+                isTrendingSelected
+                  ? "font-bold decoration-[0.6rem] underline underline-offset-[0.75rem] "
+                  : "text-muted"
+              } text-lg ease-in-out duration-100`}
+              onClick={() => {
+                setIsTrendingSelected(true);
+              }}
+            >
+              Trending
+            </button>
+            <button
+              className={`${
+                !isTrendingSelected
+                  ? "font-bold decoration-[0.6rem] underline underline-offset-[0.75rem] "
+                  : "text-muted"
+              } text-lg ease-in-out duration-100 `}
+              onClick={async () => {
+                if (!recentNotesData) {
+                  await loadInitialRecentNotes();
+                }
+                setIsTrendingSelected(false);
+              }}
+            >
+              Recent
+            </button>
           </div>
         </div>
-        {notesData.map((noteData: Note) => (
-          <NoteCard key={noteData.id} note={noteData} />
-        ))}
+        {(() => {
+          if (isTrendingSelected) {
+            if (notesData) {
+              return notesData.map((noteData: Note) => (
+                <NoteCard key={noteData.id} note={noteData} />
+              ));
+            } else {
+              return <div>No Notes Uploaded</div>;
+            }
+          } else if (recentNotesData) {
+            return recentNotesData.map((noteData: Note) => (
+              <NoteCard key={noteData.id} note={noteData} />
+            ));
+          } else {
+            return <div>No Notes Uploaded</div>;
+          }
+        })()}
         <div
-          ref={ref}
           className={`col-span-1 mt-16 items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4 ${
             allNotesLoaded ? "hidden" : "flex"
           }`}
+          ref={ref}
         >
           <svg
             aria-hidden="true"

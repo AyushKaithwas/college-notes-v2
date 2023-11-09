@@ -1,6 +1,9 @@
 // import { Card } from "ui";
 import Image from "next/image";
 import { Navbar, GridWrapper, Button } from "ui";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+
 // import styles from "./page.module.css";
 
 export default function Page(): JSX.Element {
@@ -50,20 +53,24 @@ export default function Page(): JSX.Element {
             some love from your peers
           </p>
           <div className="flex gap-5 my-4">
-            <Button
-              className="border-[1px] rounded-[0.5rem]"
-              type="submit"
-              variant="outline"
-            >
-              Share Notes
-            </Button>
-            <Button
-              className="rounded-[0.5rem]"
-              type="submit"
-              variant="default"
-            >
-              Search Notes
-            </Button>
+            <Link href="/notes">
+              <Button
+                className="rounded-[0.5rem]"
+                type="submit"
+                variant="default"
+              >
+                Search Notes
+              </Button>
+            </Link>
+            <Link href="/upload-notes">
+              <Button
+                className="border-[1px] rounded-[0.5rem]"
+                type="submit"
+                variant="outline"
+              >
+                Share Notes
+              </Button>
+            </Link>
           </div>
           <p className="text-secondary underline mt-20 mb-4 ">
             Top Contributors

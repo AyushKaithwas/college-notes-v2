@@ -38,27 +38,54 @@ model Session {
 
 // User database model.
 model User {
-  id                  String    @id @default(cuid())
+  id                  String         @id @default(cuid())
   name                String
-  email               String    @unique
+  email               String         @unique
   emailVerified       DateTime?
-  numberOfNotes       Int       @default(0)
+  numberOfNotes       Int            @default(0)
   image               String?
   hashedPassword      String?
-  accountCreationTime DateTime  @default(now())
+  accountCreationTime DateTime       @default(now())
   notes               Note[] // Relation field
   comments            Comment[] // Relation field
   Account             Account[]
   Session             Session[]
+  trendingNotes       TrendingNote[]
 }
 
 // Notes database model.
 model Note {
+  id           Int          @id @default(autoincrement())
+  userId       String       @map("User_id") // Custom column name
+  title        String
+  desc         String?
+  notesLink    String
+  downloads    Int          @default(0)
+  thumbnail    String?
+  noteSize     Int
+  subject      String
+  institution  String
+  fieldOfStudy String
+  semester     String?
+  upvotes      NoteUpvote[]
+  noOfUpvotes  Int          @default(0)
+  time         DateTime     @default(now())
+  user         User         @relation(fields: [userId], references: [id])
+  comments     Comment[] // Relation field
+}
+
+model NoteUpvote {
+  id        Int      @id @default(autoincrement())
+  noteId    Int
+  createdAt DateTime @default(now())
+  note      Note     @relation(fields: [noteId], references: [id])
+}
+
+model TrendingNote {
   id           Int       @id @default(autoincrement())
   userId       String    @map("User_id") // Custom column name
   title        String
   desc         String?
-  notesUpvotes Int       @default(0)
   notesLink    String
   downloads    Int       @default(0)
   thumbnail    String?
@@ -67,20 +94,22 @@ model Note {
   institution  String
   fieldOfStudy String
   semester     String?
+  noOfUpvotes  Int       @default(0)
   time         DateTime  @default(now())
   user         User      @relation(fields: [userId], references: [id])
   comments     Comment[] // Relation field
 }
 
-// Comments database model.
 model Comment {
-  id      Int      @id @default(autoincrement())
-  postId  Int      @map("Post_id") // Custom column name
-  userId  String
-  content String   @map("Comment_content") // Custom column name
-  time    DateTime @default(now())
-  user    User     @relation(fields: [userId], references: [id])
-  note    Note     @relation(fields: [postId], references: [id])
+  id             Int           @id @default(autoincrement())
+  postId         Int           @map("Post_id") // Custom column name
+  userId         String
+  content        String        @map("Comment_content") // Custom column name
+  time           DateTime      @default(now())
+  user           User          @relation(fields: [userId], references: [id])
+  note           Note          @relation(fields: [postId], references: [id])
+  TrendingNote   TrendingNote? @relation(fields: [trendingNoteId], references: [id])
+  trendingNoteId Int?
 }
 
 model VerificationToken {
