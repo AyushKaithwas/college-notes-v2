@@ -40,7 +40,7 @@ export async function GET(): Promise<NextResponse> {
       errorMessageNotesWithMostUpvotes = err;
     });
 
-  if (errorMessageNotesWithMostUpvotes) {
+  if (errorMessageNotesWithMostUpvotes || !notesWithMostUpvotes) {
     return NextResponse.json(
       { Error: "Unable to filter trending notes" },
       { status: 400 }
