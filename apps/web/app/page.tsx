@@ -1,7 +1,6 @@
 // import { Card } from "ui";
 import Image from "next/image";
 import { Navbar, GridWrapper, Button } from "ui";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
 // import styles from "./page.module.css";

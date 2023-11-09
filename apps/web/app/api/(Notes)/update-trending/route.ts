@@ -48,6 +48,7 @@ export async function GET(): Promise<NextResponse> {
   }
 
   const notesWithMostUpvotesNewSchema = notesWithMostUpvotes.map(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- noOfUpvotes is used to rename _count.upvotes
     ({ noOfUpvotes, _count, ...rest }) => ({
       noOfUpvotes: _count.upvotes,
       ...rest,
@@ -55,7 +56,7 @@ export async function GET(): Promise<NextResponse> {
   );
   let errorWhileUpdatingTrendingNotes = "";
 
-  const result = await prisma.trendingNote
+  await prisma.trendingNote
     .createMany({
       data: notesWithMostUpvotesNewSchema,
     })

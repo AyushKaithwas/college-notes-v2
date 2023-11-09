@@ -1,9 +1,7 @@
 "use server";
 
-import { getServerSession } from "next-auth";
 import prisma from "@/lib/prisma";
 import { type Note } from "@/types";
-import { authOptions } from "@/lib/auth";
 
 export async function getRecentNotes(
   pageSize: number,

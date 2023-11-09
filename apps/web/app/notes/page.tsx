@@ -1,6 +1,3 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
 import { AllNotes } from "@/components/all-notes";
 import { getTrendingNotes } from "@/actions/get-all-notes";
 

@@ -1,13 +1,10 @@
 "use client";
 
-import Image from "next/image";
-import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { NoteCard } from "./note-card";
 import { Salutation } from "./time-salutation";
 import { type Note } from "@/types";
-import { getUsersNotes } from "@/actions/get-user-and-notes";
 import { getTrendingNotes, getRecentNotes } from "@/actions/get-all-notes";
 
 export function AllNotes({ notes }: { notes: Note[] | null }): JSX.Element {
@@ -26,33 +23,39 @@ export function AllNotes({ notes }: { notes: Note[] | null }): JSX.Element {
     }
   }
 
-  async function loadMoreNotes(): Promise<void> {
+  const loadMoreNotes = useCallback(async () => {
     const nextPage = page + 1;
     const userNotes = await getTrendingNotes(12, nextPage);
     if (userNotes?.length && notesData) {
       setPage(nextPage);
-      setNotesData([...notesData, ...userNotes]);
+      setNotesData((prevNotes) => [...prevNotes, ...userNotes]);
     } else {
       setAllNotesLoaded(true);
     }
-  }
-  async function loadMoreRecentNotes(): Promise<void> {
+  }, [page, notesData, getTrendingNotes]); // add any other dependencies here
+
+  const loadMoreRecentNotes = useCallback(async () => {
     const nextPage = page + 1;
     const userNotes = await getTrendingNotes(12, nextPage);
     if (userNotes?.length && recentNotesData) {
       setPage(nextPage);
-      setNotesData([...recentNotesData, ...userNotes]);
+      setNotesData((prevRecentNotes) => [...prevRecentNotes, ...userNotes]);
     } else {
       setAllNotesLoaded(true);
     }
-  }
+  }, [page, recentNotesData]); // add any other dependencies here
+
   useEffect(() => {
     void (async () => {
       if (inView) {
-        await loadMoreNotes().catch(console.error);
+        if (isTrendingSelected) {
+          await loadMoreNotes().catch(console.error);
+        } else {
+          await loadMoreRecentNotes().catch(console.error);
+        }
       }
     })();
-  }, [inView]);
+  }, [inView, loadMoreNotes, loadMoreRecentNotes, isTrendingSelected]);
 
   return (
     <div className="w-[100vw] flex flex-col items-center">
