@@ -29,7 +29,7 @@ export function AllNotes({ notes }: { notes: Note[] | null }): JSX.Element {
   async function loadMoreNotes(): Promise<void> {
     const nextPage = page + 1;
     const userNotes = await getTrendingNotes(12, nextPage);
-    if (userNotes?.length) {
+    if (userNotes?.length && notesData) {
       setPage(nextPage);
       setNotesData([...notesData, ...userNotes]);
     } else {
@@ -39,9 +39,9 @@ export function AllNotes({ notes }: { notes: Note[] | null }): JSX.Element {
   async function loadMoreRecentNotes(): Promise<void> {
     const nextPage = page + 1;
     const userNotes = await getTrendingNotes(12, nextPage);
-    if (userNotes?.length) {
+    if (userNotes?.length && recentNotesData) {
       setPage(nextPage);
-      setNotesData([...notesData, ...userNotes]);
+      setNotesData([...recentNotesData, ...userNotes]);
     } else {
       setAllNotesLoaded(true);
     }
@@ -67,6 +67,7 @@ export function AllNotes({ notes }: { notes: Note[] | null }): JSX.Element {
                   : "text-muted"
               } text-lg ease-in-out duration-100`}
               onClick={() => {
+                setAllNotesLoaded(false);
                 setIsTrendingSelected(true);
               }}
             >
@@ -79,6 +80,7 @@ export function AllNotes({ notes }: { notes: Note[] | null }): JSX.Element {
                   : "text-muted"
               } text-lg ease-in-out duration-100 `}
               onClick={async () => {
+                setAllNotesLoaded(false);
                 if (!recentNotesData) {
                   await loadInitialRecentNotes();
                 }
