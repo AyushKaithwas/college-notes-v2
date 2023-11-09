@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(): Promise<NextResponse> {
+  let errorMessage = "";
   const currentDate = new Date();
   const sevenDaysAgo = new Date(currentDate.setDate(currentDate.getDate() - 7));
   const notesWithMostUpvotes = await prisma.note
@@ -36,11 +37,15 @@ export async function GET(): Promise<NextResponse> {
     })
     .catch((err) => {
       console.log(err);
-      return NextResponse.json(
-        { Error: "Unable to filter trending notes" },
-        { status: 400 }
-      );
+      errorMessage = err;
     });
+
+  if (errorMessage) {
+    return NextResponse.json(
+      { Error: "Unable to filter trending notes" },
+      { status: 400 }
+    );
+  }
 
   const notesWithMostUpvotesNewSchema = notesWithMostUpvotes.map(
     ({ noOfUpvotes, _count, ...rest }) => ({
