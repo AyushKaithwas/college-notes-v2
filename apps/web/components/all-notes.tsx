@@ -28,18 +28,18 @@ export function AllNotes({ notes }: { notes: Note[] | null }): JSX.Element {
     const userNotes = await getTrendingNotes(12, nextPage);
     if (userNotes?.length && notesData) {
       setPage(nextPage);
-      setNotesData((prevNotes) => [...prevNotes, ...userNotes]);
+      setNotesData([...notesData, ...userNotes]);
     } else {
       setAllNotesLoaded(true);
     }
-  }, [page, notesData, getTrendingNotes]); // add any other dependencies here
+  }, [page, notesData]); // add any other dependencies here
 
   const loadMoreRecentNotes = useCallback(async () => {
     const nextPage = page + 1;
     const userNotes = await getTrendingNotes(12, nextPage);
     if (userNotes?.length && recentNotesData) {
       setPage(nextPage);
-      setNotesData((prevRecentNotes) => [...prevRecentNotes, ...userNotes]);
+      setNotesData([...recentNotesData, ...userNotes]);
     } else {
       setAllNotesLoaded(true);
     }
