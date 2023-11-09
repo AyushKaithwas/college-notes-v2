@@ -8,7 +8,7 @@ import { authOptions } from "@/lib/auth";
 export async function getRecentNotes(
   pageSize: number,
   page: number
-): Promise<null> {
+): Promise<Note[] | null> {
   const recentNotes = await prisma.note.findMany({
     take: pageSize,
     skip: (page - 1) * pageSize,
