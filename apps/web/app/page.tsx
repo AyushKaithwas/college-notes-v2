@@ -117,7 +117,9 @@ export default function Page(): JSX.Element {
             width={100}
           />
           <h1 className="font-black text-4xl">REVOLUTIONISE NOTES</h1>
-          <p>Share your notes and earn some love from your peers</p>
+          <p className="text-secondary">
+            Share your notes and earn some love from your peers
+          </p>
           <div className="flex gap-5 my-4">
             <Link href="/notes">
               <Button

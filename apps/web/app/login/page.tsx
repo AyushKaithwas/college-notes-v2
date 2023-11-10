@@ -7,29 +7,29 @@ import LoginButton from "./login-button";
 export default function Page(): JSX.Element {
   return (
     <GridWrapper>
-      <div className="w-full h-[92vh] flex flex-row justify-evenly items-center">
+      <div className="w-full h-[92vh] flex md:flex-row flex-col justify-evenly items-center p-10">
         <Image
           alt="College Notes Book"
+          className="md:w-[350px] w-[100px] my-10"
           height={300}
           src="/college-notes-book.png"
-          style={{ height: "50vh", width: "auto" }}
           width={300}
         />
-        <div className="flex flex-col w-[22rem]">
-          <h1 className=" font-bold text-secondary text-[2.5rem]">
+        <div className="flex flex-col  ">
+          <h1 className="md:flex hidden font-bold text-secondary text-[2.5rem]">
             Welcome Back
           </h1>
-          <p className="text-secondary -mt-1 mb-3">
+          <p className="md:flex hidden text-secondary -mt-1 mb-3">
             We were starting to miss you
           </p>
           <form action="submit" className="flex flex-col items-start">
             <input
-              className="bg-transparent placeholder-disabled border border-secondary rounded-md py-3 px-4 w-[350px]"
+              className="bg-transparent placeholder-disabled border border-secondary rounded-md py-3 px-4 w-full"
               placeholder="Email"
               type="text"
             />
             <input
-              className="bg-transparent placeholder-disabled border border-secondary rounded-md py-3 px-4 mt-4 w-[350px] "
+              className="bg-transparent placeholder-disabled border border-secondary rounded-md py-3 px-4 mt-4 w-full"
               placeholder="Password"
               type="password"
             />
