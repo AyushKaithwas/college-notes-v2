@@ -57,8 +57,8 @@ export default function Page(): JSX.Element {
                 <span className="text-primary">Terms & Conditions</span> and{" "}
                 <span className="text-primary">Privacy policy</span>
               </p>
-              <hr className="my-2 w-[110%] border-disabled rounded-xl" />
-              <p className="text-secondary mt-3">Or sign in with</p>
+              <hr className="my-5 w-[110%] border-disabled rounded-xl" />
+              <p className="text-secondary">Or sign in with</p>
               <div className="flex flex-row gap-8 m-6">
                 <div className="flex flex-col items-center justify-center">
                   <LoginButton providerName="Google" svgLogo={GoogleLogo} />
