@@ -12,7 +12,9 @@
         "NODE_ENV",
         "GOOGLE_CLIENT_ID",
         "GOOGLE_CLIENT_SECRET",
-        "PDF_TO_IMG_URL"
+        "PDF_TO_IMG_URL",
+        "LINKEDIN_CLIENT_ID",
+        "LINKEDIN_CLIENT_SECRET"
       ]
     },
     "dev": {
@@ -24,7 +26,9 @@
         "NODE_ENV",
         "GOOGLE_CLIENT_ID",
         "GOOGLE_CLIENT_SECRET",
-        "PDF_TO_IMG_URL"
+        "PDF_TO_IMG_URL",
+        "LINKEDIN_CLIENT_ID",
+        "LINKEDIN_CLIENT_SECRET"
       ]
     },
     "db:generate": {

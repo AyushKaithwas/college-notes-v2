@@ -11,7 +11,7 @@ export default function Page(): JSX.Element {
     <>
       <Navbar logoAlt="College Notes Logo" logoSrc="/logo-small.png" />
       <GridWrapper>
-        <main className="flex flex-wrap flex-col p-24 justify-center items-center min-h-[90vh]">
+        <main className="md:flex hidden flex-wrap flex-col p-24 justify-center items-center min-h-[90vh]">
           <div className="group">
             <div className="relative w-48 h-48 left-1/2 top-1/2 transform -translate-x-1/2">
               <h1
@@ -71,39 +71,109 @@ export default function Page(): JSX.Element {
               </Button>
             </Link>
           </div>
-          <p className="text-secondary underline mt-20 mb-4 ">
-            Top Contributors
-          </p>
-          <div className="flex">
-            <div className="flex flex-col items-center px-6">
-              <Image
-                alt="Picture of the author"
-                height={70}
-                src="/parrot.jpg"
-                style={{ clipPath: "circle()" }}
-                width={70}
-              />
-              <p className="text-xs py-2">Parrot Foo</p>
+          <div className="flex flex-col items-center gap-4 mt-10">
+            <p className="text-secondary underline underline-offset-4 text-center">
+              Top Contributors
+            </p>
+            <div className="flex gap-7">
+              <div className="w-20 h-20 flex flex-col items-center">
+                <Image
+                  alt="Picture of the author"
+                  height={60}
+                  src="/avatar1.png"
+                  style={{ clipPath: "circle()" }}
+                  width={60}
+                />
+                <p className="text-xs py-2">C.V. Raman</p>
+              </div>
+              <div className="w-20 h-20 flex flex-col items-center text-center">
+                <Image
+                  alt="Picture of the author"
+                  height={60}
+                  src="/avatar2.png"
+                  style={{ clipPath: "circle()" }}
+                  width={60}
+                />
+                <p className="text-xs py-2">Dr. Asima Chatterjee</p>
+              </div>
+              <div className="w-20 h-20 flex flex-col items-center text-center">
+                <Image
+                  alt="Picture of the author"
+                  height={60}
+                  src="/avatar3.png"
+                  style={{ clipPath: "circle()" }}
+                  width={60}
+                />
+                <p className="text-xs py-2">Venkatraman Ramakrishnan</p>
+              </div>
             </div>
-            <div className="flex flex-col items-center  px-6">
-              <Image
-                alt="Picture of the author"
-                height={70}
-                src="/parrot.jpg"
-                style={{ clipPath: "circle()" }}
-                width={70}
-              />
-              <p className="text-xs py-2">Parrot Foo</p>
-            </div>
-            <div className="flex flex-col items-center  px-6">
-              <Image
-                alt="Picture of the author"
-                height={70}
-                src="/parrot.jpg"
-                style={{ clipPath: "circle()" }}
-                width={70}
-              />
-              <p className="text-xs py-2">Parrot Foo</p>
+          </div>
+        </main>
+        <main className="h-[90vh] md:hidden flex flex-col px-10 py-20 gap-5">
+          <Image
+            alt="Book alt image"
+            height={100}
+            src="/Book.svg"
+            width={100}
+          />
+          <h1 className="font-black text-4xl">REVOLUTIONISE NOTES</h1>
+          <p>Share your notes and earn some love from your peers</p>
+          <div className="flex gap-5 my-4">
+            <Link href="/notes">
+              <Button
+                className="rounded-[0.5rem]"
+                type="submit"
+                variant="default"
+              >
+                Search Notes
+              </Button>
+            </Link>
+            <Link href="/upload-notes">
+              <Button
+                className="border-[1px] rounded-[0.5rem]"
+                type="submit"
+                variant="outline"
+              >
+                Share Notes
+              </Button>
+            </Link>
+          </div>
+
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-secondary underline underline-offset-4 text-center">
+              Top Contributors
+            </p>
+            <div className="flex gap-7">
+              <div className="w-20 h-20 flex flex-col items-center">
+                <Image
+                  alt="Picture of the author"
+                  height={60}
+                  src="/avatar1.png"
+                  style={{ clipPath: "circle()" }}
+                  width={60}
+                />
+                <p className="text-xs py-2">C.V. Raman</p>
+              </div>
+              <div className="w-20 h-20 flex flex-col items-center text-center">
+                <Image
+                  alt="Picture of the author"
+                  height={60}
+                  src="/avatar2.png"
+                  style={{ clipPath: "circle()" }}
+                  width={60}
+                />
+                <p className="text-xs py-2">Dr. Asima Chatterjee</p>
+              </div>
+              <div className="w-20 h-20 flex flex-col items-center text-center">
+                <Image
+                  alt="Picture of the author"
+                  height={60}
+                  src="/avatar3.png"
+                  style={{ clipPath: "circle()" }}
+                  width={60}
+                />
+                <p className="text-xs py-2">Venkatraman Ramakrishnan</p>
+              </div>
             </div>
           </div>
         </main>

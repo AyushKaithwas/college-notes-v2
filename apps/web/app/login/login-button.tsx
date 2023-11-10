@@ -24,7 +24,7 @@ export default function LoginButton({
       disabled={loading}
       onClick={() => {
         setLoading(true);
-        void signIn("google");
+        void signIn(providerName.toLowerCase());
       }}
       type="submit"
     >

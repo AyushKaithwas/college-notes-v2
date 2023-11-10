@@ -2,10 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../../apps/web/lib/auth";
 import { useSession } from "next-auth/react";
-import SignOut from "./sign-out-button";
 import { Button } from "./primary-button";
 import { ProfileButton } from "./profile-button";
 export function Navbar({
@@ -18,7 +15,7 @@ export function Navbar({
   const { data: session } = useSession();
   // console.log(session);
   return (
-    <div className="flex h-[8vh] justify-between px-10 py-8 items-center border-b-[1px] border-[#363636]">
+    <div className="flex h-[8vh] justify-between pl-7 pr-3 items-center border-b-[1px] border-[#363636]">
       <Link href="/">
         <div className="flex gap-4 items-center">
           <img alt={logoAlt} src={logoSrc} />
@@ -30,7 +27,7 @@ export function Navbar({
       <div className="">
         {session ? (
           <>
-            <div className="flex flex-row gap-5 justify-center items-center">
+            <div className="flex flex-row md:gap-5 justify-center items-center">
               <button>
                 <Link href="/upload-notes">
                   <Image
@@ -47,7 +44,7 @@ export function Navbar({
           </>
         ) : (
           <Link href="/login">
-            <Button className="rounded-[0.75rem]" variant="outline">
+            <Button className="rounded-[0.75rem] mr-7" variant="outline">
               Log In
             </Button>
           </Link>
